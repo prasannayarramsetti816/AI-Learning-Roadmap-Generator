@@ -1,25 +1,25 @@
 # AI Learning Roadmap Generator
 
-## Overview
+## Project Overview
 
-AI Learning Roadmap Generator is a Python-based Data Science project that creates a personalized learning roadmap based on a user's current skills, target career role, and available study time.
+The AI Learning Roadmap Generator is a Python-based Data Science project that creates a personalized learning roadmap based on a user's current skills, target career role, and available study time.
 
-The application identifies the user's existing skills, finds the skill gap for the selected role, provides an AI-based learning recommendation, estimates study duration, and generates a step-by-step learning roadmap.
+The application identifies the user's existing skills, analyzes the skill gap for the selected career role, provides an AI-based learning recommendation, estimates the learning duration, and generates a step-by-step roadmap.
 
-The project also uses basic Natural Language Processing (NLP) to suggest a suitable career role when the user does not know their target role.
+When the user does not know their target role, the project uses basic Natural Language Processing (NLP) techniques such as TF-IDF and Cosine Similarity to suggest a suitable career role.
 
 ---
 
 ## Problem Statement
 
-Beginners often face difficulty in understanding:
+Beginners often have difficulty deciding:
 
 * Which skills are required for a specific career role
 * Which skills they are currently missing
 * What topics they should learn
-* How much time they may need to study
+* How much time they should spend learning each skill
 
-This project helps users identify their skill gaps and generates a structured learning roadmap.
+This project provides a simple personalized learning path based on the user's current skills and career goal.
 
 ---
 
@@ -28,13 +28,13 @@ This project helps users identify their skill gaps and generates a structured le
 The main objectives of this project are:
 
 1. Collect the user's current skills.
-2. Allow users to select their target career role.
-3. Suggest a career role using NLP when the target role is unknown.
-4. Identify missing skills.
+2. Allow the user to select a target career role.
+3. Suggest a career role when the target role is unknown.
+4. Identify the skill gap.
 5. Generate an AI-based learning recommendation.
 6. Estimate learning duration based on study hours.
-7. Create a personalized learning roadmap.
-8. Export the generated roadmap to a CSV file.
+7. Generate a personalized learning roadmap.
+8. Export the roadmap to a CSV file.
 
 ---
 
@@ -44,7 +44,7 @@ The main objectives of this project are:
 
 * Python
 
-### Python Libraries
+### Libraries
 
 * NumPy
 * Pandas
@@ -55,7 +55,7 @@ The main objectives of this project are:
 * Text Cleaning
 * Regular Expressions
 * Tokenization
-* Skill Extraction
+* Keyword-based Skill Extraction
 * Skill Synonyms
 * TF-IDF
 * Cosine Similarity
@@ -63,16 +63,18 @@ The main objectives of this project are:
 ### Machine Learning / Neural Network
 
 * Multi-Layer Perceptron (MLP)
-* ReLU Activation Function
-* Basic Feature Engineering
+* Binary Feature Representation
 * Classification
 * Prediction Probability
+* ReLU Activation Function
+
+The project uses `MLPClassifier` with one hidden layer containing five neurons.
 
 ---
 
 ## Supported Career Roles
 
-The application supports the following roles:
+The application supports four career roles:
 
 1. Data Analyst
 2. Data Scientist
@@ -83,9 +85,9 @@ Each role has a predefined set of required skills.
 
 ---
 
-## Skills Covered
+## Skills in the Learning Roadmap
 
-The roadmap contains learning areas such as:
+The project contains the following learning areas.
 
 ### Python
 
@@ -164,9 +166,11 @@ The roadmap contains learning areas such as:
 * TF-IDF
 * Text Classification
 
-## Note: The Deep Learning and NLP topics listed above are mainly used as learning-roadmap content. The actual implemented NLP functionality uses basic text processing, skill extraction, TF-IDF, and cosine similarity, while the implemented neural-network component uses an MLP classifier.
+The Deep Learning and NLP sections above are primarily learning-roadmap content. The actual implemented NLP component uses text cleaning, tokenization, skill extraction, TF-IDF, and Cosine Similarity. The actual neural-network component uses an MLP classifier.
 
-## How the Project Works
+---
+
+## Project Workflow
 
 ```text
 User Input
@@ -177,25 +181,25 @@ Current Skills
     v
 Skill Extraction
     |
-    +-----------------------------+
-    |                             |
-    v                             v
-Target Role Known?          Target Role Unknown
-    |                             |
-    v                             v
-Select Target Role           Enter Career Goal
-                                    |
-                                    v
-                            TF-IDF + Cosine Similarity
-                                    |
-                                    v
-                             Suggested Career Role
+    +------------------------------+
+    |                              |
+    v                              v
+Target Role Known?           Target Role Unknown
+    |                              |
+    v                              v
+Select Target Role             Career Goal
+                                   |
+                                   v
+                         TF-IDF + Cosine Similarity
+                                   |
+                                   v
+                          Suggested Career Role
     |
     v
 Skill Gap Analysis
     |
     v
-MLP AI Recommendation
+MLP Recommendation
     |
     v
 Duration Calculation
@@ -209,29 +213,25 @@ CSV Export
 
 ---
 
-## NLP Component
+## How the Project Works
 
-The project uses basic NLP techniques to process user input.
+### Step 1: User Input
 
-### Text Cleaning
+The application asks the user for:
 
-The system converts text to lowercase and removes unnecessary characters using regular expressions.
+* Name
+* Current skills
+* Whether the target role is known
+* Target career role or career goal
+* Study hours per day
 
-Example:
+The application accepts `1/2` as well as `Yes/No` for the target-role question.
 
-```text
-"I want to become a Data Scientist!"
-                    ↓
-"i want to become a data scientist"
-```
+---
 
-### Tokenization
+### Step 2: Skill Extraction
 
-The cleaned text is split into individual words.
-
-### Skill Extraction
-
-The system detects predefined skills from the user's input.
+The system processes the user's current skills and maps different skill names or synonyms to standard skill names.
 
 For example:
 
@@ -248,25 +248,45 @@ machine learning → Machine Learning
 
 dl → Deep Learning Basics
 deep learning → Deep Learning Basics
+
+nlp → NLP Basics
 ```
 
-These mappings are defined using a skill-synonym dictionary.
-
-### TF-IDF
-
-TF-IDF converts the career goal and role descriptions into numerical vectors.
-
-### Cosine Similarity
-
-Cosine similarity compares the user's career goal with predefined role descriptions and selects the most similar role.
+This mapping is implemented using a predefined skill-synonym dictionary.
 
 ---
 
-## Skill Gap Analysis
+### Step 3: NLP Role Suggestion
 
-The application compares the user's detected skills with the skills required for the selected target role.
+When the user does not know their target role, the project analyzes the career goal.
 
-Example:
+The process is:
+
+```text
+Career Goal
+     |
+     v
+Text Cleaning
+     |
+     v
+TF-IDF
+     |
+     v
+Cosine Similarity
+     |
+     v
+Suggested Role
+```
+
+The project first checks for an exact role match. Otherwise, it compares the user's career goal with predefined role descriptions using TF-IDF and Cosine Similarity.
+
+---
+
+## Step 4: Skill Gap Analysis
+
+The application compares the user's detected skills with the required skills for the selected target role.
+
+For example:
 
 ```text
 Current Skills:
@@ -276,7 +296,7 @@ Target Role:
 Data Scientist
 ```
 
-The system identifies the missing skills:
+The application identifies missing skills such as:
 
 ```text
 NumPy
@@ -287,23 +307,32 @@ Machine Learning
 Deep Learning Basics
 ```
 
-The required skills for each role are predefined in the application.
+The required skills for each role are predefined in the project.
 
 ---
 
-## AI Recommendation Component
+## Step 5: AI Recommendation
 
-The project uses an MLPClassifier to provide a learning recommendation.
+The project uses a Multi-Layer Perceptron classifier to generate a learning recommendation.
 
-The model uses binary features representing whether the user has:
+The model uses five binary skill features:
 
-* Python
-* SQL
-* Statistics
-* Machine Learning
-* Deep Learning
+```text
+Python
+SQL
+Statistics
+Machine Learning
+Deep Learning
+```
 
-The model produces recommendations such as:
+Each feature is represented as:
+
+```text
+1 = Skill Present
+0 = Skill Missing
+```
+
+The model produces one of two recommendations:
 
 ```text
 Focus on Core Fundamentals
@@ -315,31 +344,26 @@ or
 Continue with Advanced Learning
 ```
 
-The model uses a small manually created sample dataset for demonstration purposes.
+The model is trained using a small manually created sample dataset.
 
-The neural network configuration includes:
+### Important Note
 
-* One hidden layer
-* 5 hidden neurons
-* ReLU activation
-* LBFGS solver
+The displayed `Recommendation Probability` comes from the model's `predict_proba()` output.
 
-The displayed recommendation probability is obtained using `predict_proba()`.
-
-> Note: This probability is not the overall model accuracy. The MLP component is a small demonstration model and is not intended to represent a production-ready prediction system.
+It should not be interpreted as the overall model accuracy or as production-level confidence because the model is trained on a small demonstration dataset.
 
 ---
 
-## Personalized Roadmap
+## Step 6: Personalized Learning Roadmap
 
 After identifying the skill gap, the application generates a personalized roadmap.
 
-For every missing skill, the system displays:
+For every missing skill, it displays:
 
 * Step number
-* Skill
+* Skill name
 * Estimated study duration
-* Topics to learn
+* Important topics
 
 Example:
 
@@ -357,29 +381,35 @@ Topics:
 
 ---
 
-## Duration Calculation
+## Step 7: Duration Estimation
 
-The estimated duration depends on:
+The project estimates the learning duration using:
 
-* Required skills
 * Base duration assigned to each skill
-* Number of study hours per day
+* User's study hours per day
 
-The project uses a heuristic formula to estimate the overall learning duration.
+The project uses a heuristic formula for estimation.
 
-The duration is an estimate and may vary from person to person.
+```text
+Estimated Duration =
+(Base Skill Duration × 2) / Study Hours Per Day
+```
+
+The result is rounded up for the overall roadmap duration and used as an approximate learning plan.
+
+The estimated duration is only a planning approximation and may vary from person to person.
 
 ---
 
-## CSV Export
+## Step 8: CSV Export
 
-After generating the roadmap, the application saves the result as:
+After generating the roadmap, the application saves it as:
 
 ```text
 my_ai_learning_roadmap.csv
 ```
 
-The CSV contains:
+The generated CSV contains:
 
 * Step
 * Skill
@@ -390,7 +420,7 @@ The CSV contains:
 
 ## Example
 
-### Input
+### Sample Input
 
 ```text
 Enter your name: Durga
@@ -405,6 +435,12 @@ Do you know your target role?
 Select an option:
 1
 
+Available Roles:
+1. Data Analyst
+2. Data Scientist
+3. ML Engineer
+4. NLP Engineer
+
 Select your target role:
 2
 
@@ -412,7 +448,7 @@ How many hours can you study per day?
 4
 ```
 
-### Output
+### Sample Output
 
 ```text
 Target Role: Data Scientist
@@ -420,7 +456,7 @@ Target Role: Data Scientist
 Detected Skills:
 Python, Pandas
 
-Skill Gap:
+SKILL GAP:
 NumPy
 SQL
 Statistics
@@ -428,12 +464,33 @@ AI Basics
 Machine Learning
 Deep Learning Basics
 
-Recommendation:
+AI RECOMMENDATION:
 Focus on Core Fundamentals
 
 Estimated Duration:
 6 week(s)
 ```
+
+The application then displays the complete roadmap for each missing skill.
+
+---
+
+## Main Functions
+
+The notebook contains the following important functions:
+
+```text
+clean_text()
+tokenize()
+extract_skills()
+suggest_role()
+find_skill_gap()
+calculate_duration()
+get_recommendation()
+generate_roadmap()
+```
+
+These functions handle text processing, skill extraction, role suggestion, skill-gap analysis, AI recommendation, duration estimation, and roadmap generation.
 
 ---
 
@@ -442,13 +499,12 @@ Estimated Duration:
 ```text
 AI-Learning-Roadmap-Generator/
 │
-├── app.py
-├── requirements.txt
+├── AI_Learning_Roadmap_Generator_Prj.ipynb
 ├── README.md
-└── my_ai_learning_roadmap.csv
+└── requirements.txt
 ```
 
-`my_ai_learning_roadmap.csv` is generated automatically when the application runs successfully.
+The file `my_ai_learning_roadmap.csv` is generated automatically when the notebook is executed.
 
 ---
 
@@ -457,7 +513,7 @@ AI-Learning-Roadmap-Generator/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/AI-Learning-Roadmap-Generator.git
+git clone https://github.com/prasannayarramsetti816/AI-Learning-Roadmap-Generator.git
 ```
 
 ### 2. Open the Project Folder
@@ -472,62 +528,71 @@ cd AI-Learning-Roadmap-Generator
 pip install -r requirements.txt
 ```
 
-### 4. Run the Application
+### 4. Open the Jupyter Notebook
 
-```bash
-python app.py
+Open:
+
+```text
+AI_Learning_Roadmap_Generator_Prj.ipynb
 ```
+
+Run the notebook cells in order.
 
 ---
 
-## Main Functions
+## Requirements
 
-The project contains the following important functions:
+The project requires:
 
 ```text
-clean_text()
-tokenize()
-extract_skills()
-suggest_role()
-find_skill_gap()
-calculate_duration()
-get_recommendation()
-generate_roadmap()
+numpy
+pandas
+scikit-learn
 ```
 
 ---
 
 ## Limitations
 
-* Role descriptions are predefined.
+* The role descriptions are predefined.
 * Skill extraction uses predefined keywords and synonyms.
-* The MLP model uses a small manually created sample dataset.
-* Learning duration is an estimated heuristic.
+* The MLP recommendation model uses a small manually created dataset.
+* Recommendation probability is not overall model accuracy.
+* Learning duration is a heuristic estimate.
 * The NLP implementation is basic.
-* The project does not use LLMs, Generative AI, RAG, Transformers, or external APIs.
+* The project does not use LLMs, Generative AI, RAG, LangChain, Transformers, BERT, GPT, or external APIs.
 
 ---
 
 ## Future Enhancements
 
-Future versions can include:
+Future versions of the project can include:
 
 * More career roles
-* More skills and learning topics
+* More technical skills
 * Larger real-world training datasets
-* Course and resource recommendations
-* Streamlit web interface
-* Advanced NLP models
-* Integration with online learning platforms
+* Course and learning-resource recommendations
+* Streamlit web application
 * Improved recommendation models
+* Advanced NLP techniques
+* Integration with online learning platforms
 
 ---
 
 ## Conclusion
 
-The AI Learning Roadmap Generator demonstrates how Python, data processing, basic NLP, machine learning, and a basic neural-network model can be combined to create a personalized learning recommendation system.
+The AI Learning Roadmap Generator demonstrates how Python, NumPy, Pandas, basic NLP, machine learning, and a basic neural-network model can be combined to create a personalized learning recommendation system.
 
-The application helps users understand their current skill level, identify missing skills for a target role, and follow a structured learning roadmap.
+The project helps users:
+
+* Understand their current skills
+* Identify missing skills
+* Choose a suitable career role
+* Receive an AI-based learning recommendation
+* Generate a structured learning roadmap
+* Estimate their learning duration
+
+This project is designed as a beginner-friendly Data Science project and demonstrates practical application of Python, NLP, machine learning, and data processing concepts.
 
 ---
 
@@ -537,4 +602,5 @@ The application helps users understand their current skill level, identify missi
 
 B.Sc. Computer Science | Data Science Fresher
 
-GitHub: https://github.com/prasannayarramsetti816
+GitHub:
+https://github.com/prasannayarramsetti816
